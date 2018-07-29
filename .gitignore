@@ -1,6 +1,7 @@
 # Configuration files
 config.py
 .ipynb_checkpoints
+nyt-reviews-39e5512c148e.json
 
 #PyCharm stuff
 .idea/

@@ -27,10 +27,14 @@ In this script, each page is retrieved from the `/reviews/` and parsed using `Be
   * Full Text of the review
 As the project develops, more features (price range, noise level, etc.) will be extracted as well.
 
-Some pages still do not have star ratings that can be extracted.  These are saved by the script to the file `unprocessed_urls.txt`, where an inspection shows that none of these files include reviews that have a star rating, and so our script has successfully processed all of the reviews.  Some of these unprocessed reviews are regular reviews of restaurants outside of New York, and therefore do not receive a star rating.  We will revisit these reviews later to what star rating for these reviews would be predicted by our model.
+Some pages still do not have star ratings that can be extracted.  These are saved by the script to the file `unprocessed_urls.txt`, where an inspection shows that none of these files include reviews that have a star rating, and so our script has successfully processed all of the reviews.  Some of these unprocessed reviews are regular reviews of restaurants outside of New York, and therefore do not receive a star rating.  We will revisit these reviews later to see what star rating for these reviews would be predicted by our model.
 
 Finally, the pages that were successfully processed are saved in a JSON file for the next part of the analysis.
 
 ## The Analysis
 
-TBD
+### Exploratory Analysis
+
+### Sentiment Analysis via Google
+
+EXPLAIN
