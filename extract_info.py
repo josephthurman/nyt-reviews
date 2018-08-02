@@ -1,26 +1,14 @@
 from bs4 import BeautifulSoup
 import re
 import json
+import os
 
 
-# Some helper functions
+# Some helper functions - mostly used in testing
 def get_review(counter):
     with open('./reviews/review' + str(counter) + '.html', 'r') as file:
         parsed = BeautifulSoup(file, 'html.parser')
     return(parsed)
-
-
-# Define functions for parsing
-
-# Remove some misclassified content - Critic's Notebook and Hungry City columns
-def is_misclassified(bs):
-    if len(bs.find_all('meta', {'content': re.compile('Critic.*Notebook')})) > 0 :
-        return(True)
-    if re.search('<p.*?>\s*[Cc]ritic.*[Nn]otebook\s*</p>', str(bs)):
-        return(True)
-    if len(bs.find_all('meta', {'content': 'hungry-city'})) > 0:
-        return(True)
-    return(False)
 
 # Extract the text of the review
 def find_review(bs):
@@ -69,7 +57,6 @@ def find_stars(bs):
         return(str(len(just_stars)))
     # If all else fails, return 'NA' to show we couldn't find a rating
     return('NA')
-
 
 # Extract the number of recommended dishes in the review
 def find_rec_dishes(bs):
@@ -141,21 +128,19 @@ def find_price(bs):
             return(0)
 
 
-########################################################
-# Actual Processing begins here
-with open('final_url_list.txt', 'r') as url_file:
-    urls = json.load(url_file)
+if __name__ == '__main__':
+    with open('./reviews/url_list.txt', 'r') as url_file:
+        urls = json.load(url_file)
 
-cleaned_reviews = []
-unprocessed_URLS = []
+    cleaned_reviews = []
+    unprocessed_URLS = []
 
-for counter, review_url in enumerate(urls):
-    # progress counter for debugging
-    if counter % 10 == 0:
-        print(counter)
-    # Read review
-    parsed = get_review(counter)
-    if not is_misclassified(parsed):
+    for counter, review_url in enumerate(urls):
+        # progress counter for debugging
+        if counter % 10 == 0:
+            print(counter)
+        # Read review
+        parsed = get_review(counter)
         rating = find_stars(parsed)
         if rating != 'NA':
             restaurant_info = {'id': counter,
@@ -168,14 +153,12 @@ for counter, review_url in enumerate(urls):
         else:
             unprocessed_URLS.append(review_url)
 
-# Record reviews for which a rating couldn't be found, but which is not in one of the misclassified categories
-# (e.g., Hungry City or Critic's Notebook)
-# This list ends up being short enough to inspect by hand and see that each is not a restaurant review with the star
-# system - some are reviews of out-of-town restaurants, and some are special non-review articles that have still
-# managed to slip by
-with open('unprocessed_URLs.txt', 'w') as outfile:
+# There are still some articles for which we can't find a star rating.  The list of such articles is saved here
+# It ends up being short enough to inspect by hand and see that none of these articles are real reviews with stars
+os.makedirs('data', exist_ok=True)
+with open('./data/unprocessed_URLs.txt', 'w') as outfile:
     json.dump(unprocessed_URLS, outfile)
 
 # Save cleaned reviews for further analysis
-with open('cleaned_review_data.json', 'w') as outfile:
+with open('./data/cleaned_reviews.json', 'w') as outfile:
     json.dump(cleaned_reviews, outfile)

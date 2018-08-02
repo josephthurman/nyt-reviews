@@ -22,19 +22,21 @@ After the URLS, we download the HTML source for each page. This is done in `revi
 ### Extracting the Data for each Review
 We can then process the raw HTML for each review to extract the relevant data. This is done in `extract_info.py`.
 
-In this script, each page is retrieved from the `/reviews/` and parsed using `BeautifulSoup`. From there, we define functions that extract the necessary information from the page. This is slightly difficult in that the template for reviews has changed repeatedly, and so different searches are necessary to find the relevant information in different templates. Currently, we can find the
-  * Star rating, or category in case of 0 stars (e.g., 'Satisfactory')
-  * Full Text of the review
-As the project develops, more features (price range, noise level, etc.) will be extracted as well.
+In this script, each page is retrieved from the `/reviews/` and parsed using `BeautifulSoup`. From there, we define functions that extract the necessary information from the page. This is slightly difficult in that the template for reviews has changed repeatedly, and so different searches are necessary to find the relevant information in different templates. For each review, we extract
+  * the full text of the review
+  * the price range range of the expression measured from $ to $$$$
+  * the number of recommended dishes at the restaurant
+  * the final star rating, or category in case of 0 stars (e.g., 'Satisfactory')
 
 Some pages still do not have star ratings that can be extracted.  These are saved by the script to the file `unprocessed_urls.txt`, where an inspection shows that none of these files include reviews that have a star rating, and so our script has successfully processed all of the reviews.  Some of these unprocessed reviews are regular reviews of restaurants outside of New York, and therefore do not receive a star rating.  We will revisit these reviews later to see what star rating for these reviews would be predicted by our model.
 
-Finally, the pages that were successfully processed are saved in a JSON file for the next part of the analysis.
+Finally, information extracted from each review is saved to a JSON file for the next part of the analysis.
 
 ## The Analysis
 
-### Exploratory Analysis
+In this portion of the project, we attempt to build a model that can predict the star rating received by a restaurant using the other features of the review extracted above.
 
 ### Sentiment Analysis via Google
 
-EXPLAIN
+
+### Exploratory Analysis
